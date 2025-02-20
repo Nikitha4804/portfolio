@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - MovieMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #2d2d2d;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(45, 45, 45, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .booking-summary {
+            background: #353535;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .payment-option {
+            background: #404040;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .payment-option:hover {
+            background: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .payment-option i {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .payment-form {
+            background: #353535;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background: #404040;
+            border: none;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .proceed-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .proceed-button:hover {
+            background: #ff3333;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Payment Details</h2>
+        
+        <div class="booking-summary">
+            <h3>Booking Summary</h3>
+            <div class="summary-item">
+                <span>Movie</span>
+                <span id="movieName"></span>
+            </div>
+            <div class="summary-item">
+                <span>Theater</span>
+                <span id="theaterName"></span>
+            </div>
+            <div class="summary-item">
+                <span>Show Time</span>
+                <span id="showTime"></span>
+            </div>
+            <div class="summary-item">
+                <span>Seats</span>
+                <span id="selectedSeats"></span>
+            </div>
+            <div class="summary-item">
+                <span>Total Amount</span>
+                <span>₹<span id="totalAmount"></span></span>
+            </div>
+        </div>
+
+        <h3>Select Payment Method</h3>
+        <div class="payment-methods">
+            <div class="payment-option" onclick="selectPayment('upi')">
+                <i class="fas fa-mobile-alt"></i>
+                <h4>UPI Payment</h4>
+            </div>
+            <div class="payment-option" onclick="selectPayment('card')">
+                <i class="fas fa-credit-card"></i>
+                <h4>Card Payment</h4>
+            </div>
+            <div class="payment-option" onclick="selectPayment('netbanking')">
+                <i class="fas fa-university"></i>
+                <h4>Net Banking</h4>
+            </div>
+        </div>
+
+        <div id="paymentForm" class="payment-form">
+            <!-- Form fields will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load booking details from localStorage
+            document.getElementById('movieName').textContent = localStorage.getItem('selectedMovie');
+            document.getElementById('theaterName').textContent = localStorage.getItem('selectedTheater');
+            document.getElementById('showTime').textContent = localStorage.getItem('selectedShowtime');
+            document.getElementById('selectedSeats').textContent = JSON.parse(localStorage.getItem('selectedSeats')).join(', ');
+            document.getElementById('totalAmount').textContent = localStorage.getItem('totalAmount');
+        });
+
+        function selectPayment(method) {
+            const paymentForm = document.getElementById('paymentForm');
+            paymentForm.style.display = 'block';
+
+            switch(method) {
+                case 'upi':
+                    paymentForm.innerHTML = `
+                        <div class="form-group">
+                            <label>Enter UPI ID</label>
+                            <input type="text" id="upiId" placeholder="username@upi">
+                        </div>
+                        <button class="proceed-button" onclick="processPayment('upi')">Pay Now</button>
+                    `;
+                    break;
+                case 'card':
+                    paymentForm.innerHTML = `
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" maxlength="16" placeholder="1234 5678 9012 3456">
+                        </div>
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="text" maxlength="5" placeholder="MM/YY">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="password" maxlength="3" placeholder="123">
+                        </div>
+                        <button class="proceed-button" onclick="processPayment('card')">Pay Now</button>
+                    `;
+                    break;
+                case 'netbanking':
+                    paymentForm.innerHTML = `
+                        <div class="form-group">
+                            <label>Select Bank</label>
+                            <select style="width: 100%; padding: 10px; background: #404040; border: none; border-radius: 5px; color: white;">
+                                <option>Select Bank</option>
+                                <option>SBI</option>
+                                <option>HDFC</option>
+                                <option>ICICI</option>
+                                <option>Axis Bank</option>
+                            </select>
+                        </div>
+                        <button class="proceed-button" onclick="processPayment('netbanking')">Pay Now</button>
+                    `;
+                    break;
+            }
+        }
+
+        function processPayment(method) {
+            // Simulate payment processing
+            const button = document.querySelector('.proceed-button');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                alert('Payment Successful!');
+                // Redirect to food ordering page or confirmation page
+                window.location.href = 'food.html'; 
+
+            }, 2000);
+
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikitha Yillipilli - Data Science Portfolio</title>
+    <link rel="stylesheet" href="static/css/background.css"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/background.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Meta Tags -->
+    <meta name="description" content="Nikitha Yillipilli - A passionate Data Science student exploring the realms of AI and Machine Learning. Portfolio showcasing my projects and skills in Data Science." />
+    <meta name="keywords" content="Nikitha Yillipilli, Data Science, AI, Machine Learning, Python, SQL, JavaScript" />
+    <meta name="author" content="Nikitha Yillipilli" />
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Nikitha Yillipilli - Data Science Portfolio" />
+    <meta property="og:description" content="A passionate Data Science student exploring the realms of AI and Machine Learning" />
+    <meta property="og:type" content="website" />
+    <style>
+    .scroll-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1000;
+    }
+
+    .scroll-menu {
+        display: none;
+        position: fixed;
+        bottom: 70px;
+        right: 20px;
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+    .scroll-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .scroll-menu ul li {
+        margin: 10px 0;
+    }
+
+    .scroll-menu ul li a {
+        color: #fff;
+        text-decoration: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="particles">
+            <!-- Add 50 particle divs -->
+            <div class="particle"></div>
+            <!-- Repeat 49 more times -->
+        </div>
+        <div class="noise"></div>
+    </div>
+    <!-- Home Section with Navigation -->
+    <section id="home" class="home-section">
+        <!-- Navigation only in home section -->
+        <div class="home-nav">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <a href="#home">
+                        <img src="{{ url_for('static', filename='image/logo.png') }}" class="logo"> 
+                        Nikitha<span></span>
+                    </a>
+                </div>
+                
+                <div class="content-right">
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+
+        <!-- Home Content -->
+        <div class="home-content">
+            <div class="content-left">
+                <h1 class="title">Hi, I'm <span class="highlight typing">Yillipilli Nikitha</span></h1>
+                <p class="subtitle">Data Science</p>
+                <p class="description">
+                    Passionate about transforming data into meaningful insights. 
+                    Exploring the realms of AI.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#projects" class="btn primary">View Projects</a>
+                    <a href="#contact" class="btn primary">Hire Me</a>
+                </div>
+                
+            </div>
+            <div class="content-right">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='image/profile.jpg') }}" alt="Nikitha Yillipilli">
+                    <div class="image-overlay"></div>
+                    
+                </div>
+                <div class="resume-section">
+                    <button onclick="openResumeViewer()" class="btn resume-btn">
+                        Resume
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">About Me</h2>
+            <div class="about-content">
+                <div class="about-left" data-aos="fade-up">
+                    <p>Hi, I'm <b>Nikitha Yillipilli</b>, a passionate Data Science student with a keen interest in AI and Machine Learning. I love exploring data-driven solutions and creating innovative applications that make a difference.</p>
+                    <p>My journey in technology has equipped me with strong analytical skills and a deep understanding of data science principles. I'm constantly learning and adapting to new technologies in this ever-evolving field.</p>
+                </div>
+                <div class="about-right" data-aos="fade-up">
+
+                    <h3>Certifications</h3>
+                    <div class="certification-buttons">
+                        <button onclick="openModal('static/image/higher.jpg')">Typist</button>
+                        <button onclick="openModal('static/image/msoffice.jpg')">MSOffice</button>
+                        <button onclick="openModal('static/image/dtp.jpg')">DTP</button>
+                        <button onclick="openModal('static/image/csp.jpg')">CSP</button>
+                        <button onclick="openModal('static/image/hindi.jpg')">Hindi</button>
+                    </div>
+            
+                </div>
+            </div> 
+    </section>
+    
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+<!-- Modal Structure -->
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">My Skills</h2>
+                <div class="skills-wrapper">
+                    <div class="skill-category" data-aos="fade-right">
+                        <div class="category-header">
+                            <i class="fas fa-code"></i>
+                            <h3>Programming</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Python</span>
+                                    <div class="skill-level">Advanced</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">JavaScript</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 70%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">SQL</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skill-category" data-aos="fade-left">
+                        <div class="category-header">
+                            <i class="fas fa-brain"></i>
+                            <h3>Data Science & ML</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Data Analysis</span>
+                                    <div class="skill-level">Basics</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Machine Learning</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Statistics</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 75%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skill-category" data-aos="fade-right">
+                        <div class="category-header">
+                            <i class="fas fa-robot"></i>
+                            <h3>AI & Chatbots</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Rasa Framework</span>
+                                    <div class="skill-level">Advanced</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">NLP</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Chatbot Development</span>
+                                    <div class="skill-level">Advanced</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="skill-category" data-aos="fade-left">
+                        <div class="category-header">
+                            <i class="fas fa-tools"></i>
+                            <h3>Tools & Technologies</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Git</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Power BI</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">MERN Stack</span>
+                                    <div class="skill-level">Basics</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-category" data-aos="fade-left">
+                        <div class="category-header">
+                            <i class="fas fa-code"></i>
+                            <h3>Programming</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">R</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Excel</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Data Visualization</span>
+                                    <div class="skill-level">Intermediate</div>
+                                </div>
+                                <div class="skill-progress">
+                                    <div class="progress-bar" style="width: 80%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+ <!-- Education Section -->
+<section id="education" class="section">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Education</h2>
+        <div class="timeline">
+            <!-- BSc in Data Science -->
+            <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-content">
+                    <div class="date">2022 - 2025</div>
+                    <h3>BSc in Data Science</h3>
+                    <h4>
+                        <img src="{{ url_for('static', filename='image/kbn-logo.png') }}" width="50" height="50" style="vertical-align: middle; margin-right: 10px;">
+                        KBN College
+                    </h4>
+                    <p>Vijayawada,India</p>
+                    <h4>Currently Pursuing</h4>
+                    <p>Focus on Data Science</p>
+                    <ul class="education-details">
+                        <li>GPA: 8.5/10</li>  
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Intermediate -->
+            <div class="timeline-item" data-aos="fade-left">
+                <div class="timeline-content">
+                    <div class="date">2020 - 2022</div>
+                    <h3>Intermediate</h3>
+                    <h4>
+                        <img src="{{ url_for('static', filename='image/kbn-logo.png') }}" width="50" height="50" style="vertical-align: middle; margin-right: 10px;">
+                        KBN College
+                    </h4>
+                    <p>Vijayawada,India</p>
+                    <p>Focus on Science and Mathematics</p>
+                    <ul class="education-details">
+                        <li>GPA: 7.5/10</li>  
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 10th Grade (Correctly placed inside .timeline) -->
+            <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-content">
+                    <div class="date">2020</div>
+                    <h3>10th Grade</h3>
+                    <h4>
+                        <img src= "{{ url_for('static', filename='image/coast.jpg') }}" width="50" height="50" style="vertical-align: middle; margin-right: 10px;">
+                        Coast High School
+                    </h4>
+                    <p>Vijayawada,India</p>
+                    <p>Focus on Science and Mathematics</p>
+                    <ul class="education-details">
+                        <li>First Class</li>
+                        <li>GPA: 9.3/10</li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- Closing .timeline -->
+    </div> <!-- Closing .container -->
+</section>
+
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">My Projects</h2>
+                <div class="projects-grid">
+
+                    <!-- Online Application Form Project Card -->
+                    <div class="project-card" data-aos="fade-up">
+                        <img src="{{ url_for('static', filename='image/job.png') }}" alt="Job Portal">
+                        <div class="project-info">
+                            <h3>Online Application Form</h3>
+                            <p>A web-based form for users to submit their applications online, with fields for personal and academic information.</p>
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://nikki484.github.io/job/job" target="_blank" class="project-icon" title="View Code">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="{{ url_for('static', filename='projects/task2/index.html') }}" class="project-icon" title="Live Demo">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calculator Project Card -->
+                    <div class="project-card" data-aos="fade-up">
+                        <img src="{{ url_for('static', filename='image/calci.png') }}" alt="simple calculator">
+                        <div class="project-info">
+                            <h3>Calculator</h3>
+                            <p>A simple calculator application built with HTML, CSS, and JavaScript that performs basic arithmetic operations.</p>
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://nikki484.github.io/calculator/cal" target="_blank" class="project-icon" title="View Code">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="{{ url_for('static', filename='projects/task3/index.html') }}" class="project-icon" title="Live Demo">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                    <div class="project-card" data-aos="fade-up">
+                        <img src="{{ url_for('static', filename='image/food.png') }}" alt="food">
+                        <div class="project-info">
+                            <h3>Food</h3>
+                            <p>famous food website.</p>
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://nikki484.github.io/food/food" target="_blank" class="project-icon" title="View Code">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="{{ url_for('static', filename='projects/task1/index.html') }}" class="project-icon" title="Live Demo">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                           <!-- Movie Hub (Ticket Booking) Project Card -->
+                           <div class="project-card" data-aos="fade-up">
+                            <img src="{{ url_for('static', filename='image/Movie.png') }}" alt="food">
+                            <div class="project-info">
+                                <h3>Food</h3>
+                                <p>MovieHub</p>
+                                <div class="project-tech">
+                                    <span>HTML</span>
+                                    <span>CSS</span>
+                                    <span>JavaScript</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="https://nikki484.github.io/Movie-Hub/entrance.html" target="_blank" class="project-icon" title="View Code">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                    <a href="{{ url_for('static', filename='projects/task4/entrance.html') }}" class="project-icon" title="Live Demo">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </section>
+<!-- Contact Section -->
+<section id="contact" class="section contact-section">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Contact Me</h2>
+        <div class="contact-container">
+            <!-- Left Side - Contact Information -->
+            <div class="contact-info" data-aos="fade-right">
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="item-content">
+                            <h4>Email</h4>
+                            <a href="mailto:yillipillinikki1975@gmail.com">yillipillinikki1975@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="item-content">
+                            <h4>Phone</h4>
+                            <a href="tel:+917569873780">+91 7569873780</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="item-content">
+                            <h4>Location</h4>
+                            <p>Vijayawada, Andhra Pradesh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Contact Form -->
+            <div class="contact-form-wrapper" data-aos="fade-left">
+                <form id="contact-form" class="contact-form" onsubmit="openGmail(event)">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea id="message" name="message" placeholder="Your Message" rows="4" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <span>Send Message</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-social">
+                    <a href="https://github.com/Nikitha4804" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/yillipilli-nikitha-585b97322" target=""><i class="fab fa-linkedin"></i></a>
+                    <!--<a href="mailto:yillipillinikitha1975@gmail.com"><i class="fas fa-envelope"></i></a>-->
+                </div>
+            
+            </div>
+        </div>
+    </footer>
+   <!-- Arrow Button -->
+<div class="arrow-button" id="menuButton">
+    &#9662; <!-- Unicode for Downward Arrow -->
+</div>
+
+<!-- Dropdown Menu -->
+<div class="dropdown-menu" id="dropdownMenu">
+    <ul>
+        <li><a href="#home" class="scroll-link">Home</a></li>
+        <li><a href="#about" class="scroll-link">About</a></li>
+        <li><a href="#skills" class="scroll-link">Skills</a></li>
+        <li><a href="#education" class="scroll-link">Education</a></li>
+        <li><a href="#projects" class="scroll-link">Projects</a></li>
+        <li><a href="#contact" class="scroll-link">Contact</a></li>
+    </ul>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const menuButton = document.getElementById("menuButton");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const scrollLinks = document.querySelectorAll(".scroll-link");
+    
+        // Toggle dropdown menu
+        menuButton.addEventListener("click", function() {
+            dropdownMenu.classList.toggle("active");
+        });
+    
+        // Smooth scroll & close menu
+        scrollLinks.forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+                const targetId = this.getAttribute("href").substring(1);
+                const targetSection = document.getElementById(targetId);
+                window.scrollTo({
+                    top: targetSection.offsetTop - 50,
+                    behavior: "smooth"
+                });
+                dropdownMenu.classList.remove("active"); // Close menu after clicking
+            });
+        });
+    
+        // Close menu when clicking outside
+        document.addEventListener("click", function(event) {
+            if (!menuButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove("active");
+            }
+        });
+    });
+    </script>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+    <script>
+        function openGmail(event) {
+            event.preventDefault();
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // Create email body with formatted content
+            const emailBody = `
+Dear Nikitha,
+
+You have received a new message from your portfolio website:
+
+Name: ${name}
+Email: ${email}
+
+Message:
+${message}
+
+Best regards,
+${name}
+            `.trim();
+
+            // Create Gmail URL with parameters
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=yillipillinikki1975@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+
+            // Open Gmail in a new window
+            window.open(gmailUrl, '_blank');
+
+            // Reset the form
+            document.getElementById('contact-form').reset();
+        }
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- Success Modal -->
+
+    
+</body>
+</html>
+
+<!-- Update the resume modal -->
+<div id="resume-modal" class="resume-modal">
+    <div class="resume-modal-content">
+        <button class="close-btn" onclick="closeResumeViewer()">&times;</button>
+        <div class="resume-preview-message">
+            <h3>My Resume</h3>
+            <div class="resume-buttons">
+                <a href="{{ url_for('static', filename='resume/Nikki.pdf') }}" 
+                   class="btn primary" 
+                   target="_blank">
+                    <i class="fas fa-eye"></i> View Resume
+                </a>
+                <a href="{{ url_for('static', filename='resume/Nikki.pdf') }}" 
+                   class="btn primary" 
+                   download>
+                    <i class="fas fa-download"></i> Download Resume
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Cursor Elements -->
+<div class="cursor"></div>
+
+<script>
+    // Custom Cursor Movement
+    const cursor = document.querySelector('.cursor');
+    
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+</script>
+

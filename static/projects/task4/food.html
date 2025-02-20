@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food & Beverages - MovieMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #2d2d2d;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(45, 45, 45, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .food-item {
+            background: #404040;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .food-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .food-item img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .food-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .food-item .description {
+            color: #ccc;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .food-item .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .quantity-btn {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .quantity {
+            font-size: 18px;
+        }
+
+        .cart-summary {
+            background: #353535;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .proceed-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .proceed-button:hover {
+            background: #ff3333;
+            transform: translateY(-2px);
+        }
+
+        .skip-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            color: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .skip-button:hover {
+            background: rgba(255,77,77,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add Food & Beverages</h2>
+        
+        <div class="food-grid">
+            <div class="food-item">
+                <img src="https://images.unsplash.com/photo-1585647347483-22b66260dfff?w=500" alt="Popcorn">
+                <h3>Classic Popcorn</h3>
+                <p class="description">Freshly popped, perfectly salted</p>
+                <p class="price">₹150</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="updateQuantity('popcorn', -1)">-</button>
+                    <span class="quantity" id="popcorn-qty">0</span>
+                    <button class="quantity-btn" onclick="updateQuantity('popcorn', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="food-item">
+                <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500" alt="Caramel Popcorn">
+                <h3>Coco Cola</h3>
+                <p class="description">Chilled 500ml</p>
+                <p class="price">₹180</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="updateQuantity('caramelPopcorn', -1)">-</button>
+                    <span class="quantity" id="caramelPopcorn-qty">0</span>
+                    <button class="quantity-btn" onclick="updateQuantity('caramelPopcorn', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="food-item">
+                <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=500" alt="Nachos">
+                <h3>Sprite</h3>
+                <p class="description">Chilled 500ml</p>
+                <p class="price">₹200</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="updateQuantity('nachos', -1)">-</button>
+                    <span class="quantity" id="nachos-qty">0</span>
+                    <button class="quantity-btn" onclick="updateQuantity('nachos', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="food-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0x6GtFC2Ez4ps2Fqka47GLn-xanUFVXZ1nw&s" alt="Coca Cola">
+                <h3>Choco</h3>
+                <p class="description">Dark</p>
+                <p class="price">₹100</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="updateQuantity('coke', -1)">-</button>
+                    <span class="quantity" id="coke-qty">0</span>
+                    <button class="quantity-btn" onclick="updateQuantity('coke', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="food-item">
+                <img src="https://images.unsplash.com/photo-1619158401201-8fa932695178?w=500" alt="French Fries">
+                <h3>Shakes</h3>
+                <p class="description">Milk,Chocolate,etc Shakes</p>
+                <p class="price">₹130</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="updateQuantity('fries', -1)">-</button>
+                    <span class="quantity" id="fries-qty">0</span>
+                    <button class="quantity-btn" onclick="updateQuantity('fries', 1)">+</button>
+                </div>
+            </div>
+
+            <div class="food-item">
+                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500" alt="Pizza">
+                <h3>Margherita Pizza</h3>
+                <p class="description">Personal 7-inch pizza</p>
+                <p class="price">₹250</p>
+                <div class="quantity-control">
+                    <button class="quantity-btn" onclick="updateQuantity('pizza', -1)">-</button>
+                    <span class="quantity" id="pizza-qty">0</span>
+                    <button class="quantity-btn" onclick="updateQuantity('pizza', 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div id="cart-items">
+                <!-- Cart items will be displayed here -->
+            </div>
+            <div class="cart-item">
+                <strong>Total Amount</strong>
+                <span>₹<span id="totalAmount">0</span></span>
+            </div>
+        </div>
+
+        <button class="proceed-button" onclick="confirmOrder()">Confirm Order</button>
+        <button class="skip-button" onclick="skipFoodOrder()">Skip Food Order</button>
+    </div>
+
+    <script>
+        const foodItems = {
+            popcorn: { price: 150, name: 'Classic Popcorn' },
+            caramelPopcorn: { price: 180, name: 'Caramel Popcorn' },
+            nachos: { price: 200, name: 'Cheese Nachos' },
+            coke: { price: 100, name: 'Coca Cola' },
+            fries: { price: 130, name: 'French Fries' },
+            pizza: { price: 250, name: 'Margherita Pizza' }
+        };
+
+        const cart = {
+            popcorn: 0,
+            caramelPopcorn: 0,
+            nachos: 0,
+            coke: 0,
+            fries: 0,
+            pizza: 0
+        };
+
+        function updateQuantity(item, change) {
+            const newQty = cart[item] + change;
+            if (newQty >= 0) {
+                cart[item] = newQty;
+                document.getElementById(`${item}-qty`).textContent = newQty;
+                updateCartSummary();
+            }
+        }
+
+        function updateCartSummary() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            for (const [item, qty] of Object.entries(cart)) {
+                if (qty > 0) {
+                    const subtotal = qty * foodItems[item].price;
+                    total += subtotal;
+                    cartItems.innerHTML += `
+                        <div class="cart-item">
+                            <span>${foodItems[item].name} x ${qty}</span>
+                            <span>₹${subtotal}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            document.getElementById('totalAmount').textContent = total;
+        }
+
+        function confirmOrder() {
+            const foodTotal = parseInt(document.getElementById('totalAmount').textContent);
+            if (foodTotal === 0) {
+                if (!confirm('Are you sure you want to proceed without food?')) {
+                    return;
+                }
+            }
+
+            // Store food order details
+            localStorage.setItem('foodOrder', JSON.stringify(cart));
+            localStorage.setItem('foodTotal', foodTotal);
+
+            // Show booking confirmation
+            showBookingConfirmation();
+        }
+
+        function skipFoodOrder() {
+            if (confirm('Are you sure you want to skip food order?')) {
+                showBookingConfirmation();
+            }
+        }
+
+        function showBookingConfirmation() {
+            const movieName = localStorage.getItem('selectedMovie');
+            const seats = JSON.parse(localStorage.getItem('selectedSeats'));
+            const showTime = localStorage.getItem('selectedShowtime');
+            const ticketTotal = localStorage.getItem('totalAmount');
+            const foodTotal = localStorage.getItem('foodTotal') || '0';
+
+            const message = `
+                Booking Confirmed!
+                
+                Movie: ${movieName}
+                Seats: ${seats.join(', ')}
+                Show Time: ${showTime}
+                Ticket Amount: ₹${ticketTotal}
+                Food Amount: ₹${foodTotal}
+                Total Amount: ₹${parseInt(ticketTotal) + parseInt(foodTotal)}
+                
+                Booking ID: BK${Date.now().toString().slice(-6)}
+                
+                Thank you for booking with MovieMate!
+            `;
+
+            alert(message);
+            window.location.href = 'index.html'; 
+        }
+    </script>
+</body>
+</html> 

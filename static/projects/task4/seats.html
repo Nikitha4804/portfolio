@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats - Movie Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #2d2d2d;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(45, 45, 45, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .booking-summary {
+            background: #353535;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .screen {
+            background: #666;
+            height: 70px;
+            margin: 30px 0;
+            transform: perspective(300px) rotateX(-15deg);
+            box-shadow: 0 3px 10px rgba(255,255,255,0.1);
+            text-align: center;
+            line-height: 70px;
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .seat-container {
+            perspective: 1000px;
+            margin: 40px 0;
+        }
+
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+
+        .row-label {
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            background: #404040;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .seat:hover:not(.occupied) {
+            background: #555;
+            transform: scale(1.1);
+        }
+
+        .seat.selected {
+            background: var(--primary-color);
+        }
+
+        .seat.occupied {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .seat-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .seat-type {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .seat-type .indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .available { background: #404040; }
+        .selected-seat { background: var(--primary-color); }
+        .occupied-seat { background: #666; }
+
+        .price-summary {
+            background: #353535;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .proceed-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .proceed-button:hover {
+            background: #ff3333;
+            transform: translateY(-2px);
+        }
+
+        .proceed-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #discountInfo {
+            background: rgba(76, 175, 80, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .discount-notice {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="booking-summary">
+            <h2>Booking Summary</h2>
+            <p>Movie: <span id="movieName"></span></p>
+            <p>Theater: <span id="theaterName"></span></p>
+            <p>Show Time: <span id="showTime"></span></p>
+        </div>
+
+        <div class="screen">SCREEN</div>
+
+        <div class="seat-info">
+            <div class="seat-type">
+                <div class="indicator available"></div>
+                <span>Available</span>
+            </div>
+            <div class="seat-type">
+                <div class="indicator selected-seat"></div>
+                <span>Selected</span>
+            </div>
+            <div class="seat-type">
+                <div class="indicator occupied-seat"></div>
+                <span>Occupied</span>
+            </div>
+        </div>
+
+        <div class="seat-container">
+            <div class="seat-grid" id="seatGrid">
+                <!-- Seats will be generated here -->
+            </div>
+        </div>
+
+        <div class="price-summary">
+            <h3>Price Summary</h3>
+            <div class="price-row">
+                <span>Selected Seats:</span>
+                <span id="selectedSeatsDisplay">None</span>
+            </div>
+            <div class="price-row">
+                <span>Number of Tickets:</span>
+                <span id="ticketCount">0</span>
+            </div>
+            <div class="price-row">
+                <span>Price per Ticket:</span>
+                <span>₹<span id="ticketPrice">250</span></span>
+            </div>
+            <div class="price-row">
+                <span>Total Price:</span>
+                <span>₹<span id="totalAmount">0</span></span>
+            </div>
+            <div class="price-row" id="discountInfo" style="display: none; color: #4CAF50;">
+                <span>Discount Applied (50% off):</span>
+                <span>-₹<span id="discountAmount">0</span></span>
+            </div>
+            <div class="price-row" style="border-top: 2px dashed #444; padding-top: 15px;">
+                <span><strong>Final Price:</strong></span>
+                <span style="color: var(--primary-color); font-weight: bold;">₹<span id="finalPrice">0</span></span>
+            </div>
+            <p class="discount-notice" style="color: #ffd700; margin-top: 10px; font-style: italic;">
+                <i class="fas fa-tag"></i> Book 3 or more tickets to get 50% off!
+            </p>
+            <button class="proceed-button" onclick="proceedToPayment()" disabled>
+                Proceed to Payment
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const TICKET_PRICE = 250;
+        const DISCOUNT_THRESHOLD = 3;  // Number of tickets needed for discount
+        const DISCOUNT_PERCENTAGE = 50; // 50% discount
+        let selectedSeats = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load booking details
+            document.getElementById('movieName').textContent = localStorage.getItem('selectedMovie');
+            document.getElementById('theaterName').textContent = localStorage.getItem('selectedTheater');
+            document.getElementById('showTime').textContent = localStorage.getItem('selectedShowtime');
+            
+            generateSeats();
+        });
+
+        function generateSeats() {
+            const seatGrid = document.getElementById('seatGrid');
+            const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+            
+            rows.forEach(row => {
+                for(let i = 1; i <= 10; i++) {
+                    const seat = document.createElement('div');
+                    seat.className = 'seat';
+                    seat.id = `${row}${i}`;
+                    seat.textContent = `${row}${i}`;
+                    
+                    // Randomly mark some seats as occupied
+                    if(Math.random() < 0.2) {
+                        seat.classList.add('occupied');
+                    } else {
+                        seat.onclick = () => toggleSeat(seat);
+                    }
+                    
+                    seatGrid.appendChild(seat);
+                }
+            });
+        }
+
+        function toggleSeat(seat) {
+            seat.classList.toggle('selected');
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const selected = document.querySelectorAll('.seat.selected');
+            selectedSeats = Array.from(selected).map(seat => seat.id);
+            
+            const ticketCount = selectedSeats.length;
+            const totalPrice = ticketCount * TICKET_PRICE;
+            let discountAmount = 0;
+            let finalPrice = totalPrice;
+            
+            // Apply 50% discount if 3 or more tickets
+            if (ticketCount >= DISCOUNT_THRESHOLD) {
+                discountAmount = Math.floor(totalPrice * (DISCOUNT_PERCENTAGE / 100));
+                finalPrice = totalPrice - discountAmount;
+            }
+            
+            // Update the display
+            document.getElementById('selectedSeatsDisplay').textContent = 
+                selectedSeats.length ? selectedSeats.join(', ') : 'None';
+            document.getElementById('ticketCount').textContent = ticketCount;
+            document.getElementById('totalAmount').textContent = totalPrice;
+            document.getElementById('discountAmount').textContent = discountAmount;
+            document.getElementById('finalPrice').textContent = finalPrice;
+            
+            // Show/hide discount info
+            document.getElementById('discountInfo').style.display = 
+                ticketCount >= DISCOUNT_THRESHOLD ? 'block' : 'none';
+            
+            // Enable/disable proceed button
+            document.querySelector('.proceed-button').disabled = ticketCount === 0;
+            
+            // Store values in localStorage
+            localStorage.setItem('ticketCount', ticketCount);
+            localStorage.setItem('totalAmount', finalPrice);
+            localStorage.setItem('discountAmount', discountAmount);
+            localStorage.setItem('originalPrice', totalPrice);
+        }
+
+        function proceedToPayment() {
+            if(selectedSeats.length === 0) {
+                alert('Please select at least one seat');
+                return;
+            }
+            
+            // Calculate final price with discount
+            const ticketCount = selectedSeats.length;
+            const totalPrice = ticketCount * TICKET_PRICE;
+            let discountAmount = 0;
+            let finalPrice = totalPrice;
+            
+            // Apply 50% discount if 3 or more tickets
+            if (ticketCount >= DISCOUNT_THRESHOLD) {
+                discountAmount = Math.floor(totalPrice * (DISCOUNT_PERCENTAGE / 100));
+                finalPrice = totalPrice - discountAmount;
+            }
+            
+            // Store selected seats and amount in localStorage
+            localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
+            localStorage.setItem('totalAmount', finalPrice);
+            localStorage.setItem('discountAmount', discountAmount);
+            localStorage.setItem('originalPrice', totalPrice);
+            
+            // Redirect to payment page
+            window.location.href = 'pay.html';
+        }
+    </script>
+</body>
+</html> 

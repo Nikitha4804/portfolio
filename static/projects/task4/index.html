@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Hub - Movie Ticket Booking</title>
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #2d2d2d;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(45, 45, 45, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .movie-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .movie-card {
+            background: #404040;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .movie-details {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .movie-details h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .theater-selection {
+            background: #353535;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .theater-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .theater-card {
+            background: #404040;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .theater-card:hover {
+            background: #4a4a4a;
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .theater-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .theater-info .location {
+            color: #ddd;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+
+        .theater-info .amenities {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .theater-info .amenities span {
+            font-size: 0.85em;
+            color: #bbb;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .theater-info .rating {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .theater-info i {
+            margin-right: 5px;
+        }
+
+        .location i {
+            color: var(--primary-color);
+        }
+
+        .showtime-selection {
+            background: #353535;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .showtime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .showtime-button {
+            background: #404040;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .showtime-button:hover,
+        .showtime-button.selected {
+            background: var(--primary-color);
+        }
+
+        .proceed-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .proceed-button:hover {
+            background: #ff3333;
+            transform: scale(1.05);
+        }
+
+        .discount-banner {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .discount-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.8em;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px;
+            border-radius: 50px;
+            border: 2px solid var(--primary-color);
+            background: #404040;
+            color: white;
+            font-size: 16px;
+        }
+
+        .movie-categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .category-button {
+            background: #404040;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-button.active,
+        .category-button:hover {
+            background: var(--primary-color);
+        }
+
+        /* Modal styles */
+        .trailer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #000;
+            border-radius: 10px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: -40px;
+            top: -40px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .trailer-btn {
+            background: #404040;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trailer-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .movie-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .theater-features {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .feature-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        .theater-card:hover .feature-tag {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .discount-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .original-price {
+            color: #ccc;
+        }
+
+        .discount-amount {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .final-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 5px;
+            padding-top: 5px;
+            border-top: 1px dashed #555;
+        }
+
+        .total-price,
+        .discount,
+        .final {
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+        }
+
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            color: #f1f1f1;
+            font-size: 35px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="discountBanner" class="discount-banner">
+            🎉 Buy 3 or more tickets and get 50% OFF! 🎉
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search movies..." id="movieSearchInput" oninput="searchMovies()">
+        </div>
+
+        <div class="movie-categories">
+            <button class="category-button active" onclick="filterMovies('all')">All Movies</button>
+            <button class="category-button" onclick="filterMovies('tollywood')">Tollywood</button>
+            <button class="category-button" onclick="filterMovies('bollywood')">Bollywood</button>
+            <button class="category-button" onclick="filterMovies('hollywood')">Hollywood</button>
+        </div>
+
+        <section id="movie-selection">
+            <h2>Select Your Movie</h2>
+
+            <div class="movie-selection" id="movieSelectionContainer">
+                <div class="movie-card" data-category="hollywood" onclick="selectMovie('Avengers')">
+                    <div class="discount-tag">50% OFF</div>
+                    <img src="https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_.jpg" alt="Avengers">
+                    <div class="movie-details">
+                        <h3>Avengers: Endgame</h3>
+                        <p>Action | 2h 45m</p>
+                        <p>Price: ₹250</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Avengers')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('avengers')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="hollywood" onclick="selectMovie('Inception')">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg" alt="Inception">
+                    <div class="movie-details">
+                        <h3>Inception</h3>
+                        <p>Sci-Fi | 2h 28m</p>
+                        <p>Price: ₹200</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Inception')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('inception')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="hollywood" onclick="selectMovie('Matrix')">
+                    <img src="https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg" alt="Matrix">
+                    <div class="movie-details">
+                        <h3>The Matrix</h3>
+                        <p>Action | 2h 16m</p>
+                        <p>Price: ₹220</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Matrix')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('matrix')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hollywood Movies -->
+               
+                <div class="movie-card" data-category="hollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg" alt="Oppenheimer">
+                    <div class="movie-details">
+                        <h3>Oppenheimer</h3>
+                        <p>Biography/Drama | 3h 00m</p>
+                        <p>Price: ₹250</p>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('oppenheimer')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('oppenheimer')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <!-- Tollywood Movies -->
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('Devara')">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f0/Devara_Part_1.jpg/220px-Devara_Part_1.jpg" alt="Devara">
+                    <div class="movie-details">
+                        <h3>Devara</h3>
+                        <p>Action Drama | 2h 45m</p>
+                        <p>Price: ₹250</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Devara')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('devara')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('AAY')">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMTc2NzI1OGMtMjRiOC00MzNjLWJlNmQtZWMwNmIwYmY4MGJiXkEyXkFqcGc@._V1_.jpg" alt="AAY">
+                    <div class="movie-details">
+                        <h3>AAY</h3>
+                        <p>Action Drama | 2h 35m</p>
+                        <p>Price: ₹230</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('AAY')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('ay')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('GameChanger')">
+                    <img src="https://www.thestatesman.com/wp-content/uploads/2024/07/Game-Changer-Ram-Charan-Kiara-Advani.jpg" alt="Game Changer">
+                    <div class="movie-details">
+                        <h3>Game Changer</h3>
+                        <p>Political Thriller | 2h 40m</p>
+                        <p>Price: ₹240</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('GameChanger')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('gamechanger')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('SankrantikiVasthunam')">
+                    <img src="https://images.filmibeat.com/ph-big/2024/11/sankranthiki-vasthunam-new-movie-cast-and-crew-release-date-and-story1730449882_0.jpg" alt="Sankratiki Vasthunam">
+                    <div class="movie-details">
+                        <h3>Sankratiki Vasthunam</h3>
+                        <p>Family Drama | 2h 30m</p>
+                        <p>Price: ₹220</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('SankrantikiVasthunam')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('sankrantiki')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('DakuMaharaj')">
+                    <img src="https://images.filmibeat.com/img/popcorn/movie_posters/daakumaharaaj-20241115131952-21845.jpg" alt="Daku Maharaj">
+                    <div class="movie-details">
+                        <h3>Daku Maharaj</h3>
+                        <p>Action Adventure | 2h 35m</p>
+                        <p>Price: ₹230</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('DakuMaharaj')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('dakumaharaj')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('LuckyBhaskar')">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX96wtlXWHYEUrkSbCGXFtmF0_dInCDMpddA&s" alt="Lucky Bhaskar">
+                    <div class="movie-details">
+                        <h3>Lucky Bhaskar</h3>
+                        <p>Comedy Drama | 2h 20m</p>
+                        <p>Price: ₹200</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('LuckyBhaskar')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('luckybhaskar')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('DoubleISmart')">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWhy6gHT6AV8zLUSQvSNN8U7MJQJuQJ5qvog&s" alt="Double iSmart">
+                    <div class="movie-details">
+                        <h3>Double iSmart</h3>
+                        <p>Action Thriller | 2h 38m</p>
+                        <p>Price: ₹240</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('DoubleISmart')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('doublesmart')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('Kalki2898AD')">
+                    <img src="https://i.scdn.co/image/ab67616d0000b273dc8d9c8e19c16a560b5ca524" alt="Kalki 2898 AD">
+                    <div class="movie-details">
+                        <h3>Kalki 2898 AD</h3>
+                        <p>Sci-Fi Action | 2h 55m</p>
+                        <p>Price: ₹280</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Kalki2898AD')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('kalki')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('SaripodhaSanivaram')">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/d/d9/Saripodhaa_Sanivaaram.jpg" alt="Saripodha Sanivaram">
+                    <div class="movie-details">
+                        <h3>Saripodha Sanivaram</h3>
+                        <p>Action Drama | 2h 25m</p>
+                        <p>Price: ₹220</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('SaripodhaSanivaram')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('saripodha')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="tollywood" onclick="selectMovie('Kanguva')">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzPJkYgln9-7N72TH2xhdLihBAo1HeitLMAg&s" alt="Kanguva">
+                    <div class="movie-details">
+                        <h3>Kanguva</h3>
+                        <p>Period Action | 2h 50m</p>
+                        <p>Price: ₹260</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Kanguva')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('kanguva')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2025 Anticipated Tollywood Movies -->
+             
+                
+                
+                <!-- Bollywood Movies -->
+                <div class="movie-card" data-category="bollywood" onclick="selectMovie('KGF')">
+                    <img src="https://m.media-amazon.com/images/S/pv-target-images/95e90345c39c56004a13170186b1e0abe16cb6d5f2010101a0c982ba727162dc.jpg" alt="KGF">
+                    <div class="movie-details">
+                        <h3>KGF: Chapter 2</h3>
+                        <p>Action | 2h 48m</p>
+                        <p>Price: ₹190</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('KGF')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('kgf')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="bollywood" onclick="selectMovie('Pathaan')">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvsMcd-XtihNzKzZrhCGBo2FguKpAa4P7b5w&s" alt="Pathaan">
+                    <div class="movie-details">
+                        <h3>Pathaan</h3>
+                        <p>Action | 2h 16m</p>
+                        <p>Price: ₹210</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Pathaan')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('pathaan')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="bollywood" onclick="selectMovie('Animal')">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/9/90/Animal_%282023_film%29_poster.jpg" alt="Animal">
+                    <div class="movie-details">
+                        <h3>Animal</h3>
+                        <p>Action | 3h 5m</p>
+                        <p>Price: ₹240</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Animal')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('animal')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="bollywood" onclick="selectMovie('Dunki')">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/4f/Dunki_poster.jpg/220px-Dunki_poster.jpg" alt="Dunki">
+                    <div class="movie-details">
+                        <h3>Dunki</h3>
+                        <p>Comedy | 2h 20m</p>
+                        <p>Price: ₹230</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('Dunki')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('dunki')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="movie-card" data-category="bollywood" onclick="selectMovie('YehJawaani')">
+                    <img src="https://m.media-amazon.com/images/M/MV5BODA4MjM2ODk4OF5BMl5BanBnXkFtZTcwNDgzODk1OQ@@._V1_FMjpg_UX1000_.jpg" alt="Yeh Jawaani Hai Deewani">
+                    <div class="movie-details">
+                        <h3>Yeh Jawaani Hai Deewani</h3>
+                        <p>Romance | 2h 35m</p>
+                        <p>Price: ₹210</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('YehJawaani')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('yehjawaani')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Hollywood Movies -->
+                <div class="movie-card" data-category="hollywood">
+                    <img src="https://images.squarespace-cdn.com/content/v1/63bb3e8a824d7e2f7eedf0d3/3018f731-ea23-46be-b102-6f8b84e10d6d/The+Marvels+5.jpeg" alt="The Marvels">
+                    <div class="movie-details">
+                        <h3>The Marvels</h3>
+                        <p>Action/Adventure | 1h 45m</p>
+                        <p>Price: ₹300</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('The Marvels')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('marvels')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card" data-category="hollywood">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/c/c5/Wish_%28Original_Motion_Picture_Soundtrack%29_cover.jpeg" alt="Wish">
+                    <div class="movie-details">
+                        <h3>Wish</h3>
+                        <p>Animation/Fantasy | 1h 35m</p>
+                        <p>Price: ₹250</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('Wish')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('wish')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card" data-category="hollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BYzI2YmZhZTQtMWQ1OC00YTMxLWJlNzgtYjYyZGZjOWEyNmQxXkEyXkFqcGdeQWFybm8@._V1_QL75_UY281_CR0,0,500,281_.jpg" alt="Trolls Band Together">
+                    <div class="movie-details">
+                        <h3>Trolls Band Together</h3>
+                        <p>Animation/Comedy | 1h 31m</p>
+                        <p>Price: ₹250</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('Trolls Band Together')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('trolls')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            
+
+                <div class="movie-card" data-category="hollywood">
+                    <img src="https://m.media-amazon.com/images/S/pv-target-images/189420c3dbf235953dbb719a513f845fe8422135b1008eadc67b8356ee4d2751.jpg" alt="Avatar: The Way of Water">
+                    <div class="movie-details">
+                        <h3>Avatar: The Way of Water</h3>
+                        <p>Sci-Fi/Action | 3h 12m</p>
+                        <p>Price: ₹350</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('Avatar: The Way of Water')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('avatar2')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+             
+
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMTE3ZGVjYTUtNjY5Mi00ZTZjLWIyZWUtMzMxZDE3ZTViMmNmXkEyXkFqcGc@._V1_.jpg" alt="Jawan">
+                    <div class="movie-details">
+                        <h3>Jawan</h3>
+                        <p>Action/Thriller | 2h 49m</p>
+                        <p>Price: ₹300</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('Jawan')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('jawan')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BZDNlNzBjMGUtYTA0Yy00OTI2LWJmZjMtODliYmUyYTI0OGFmXkEyXkFqcGdeQXVyODIwMDI1NjM@._V1_.jpg" alt="War">
+                    <div class="movie-details">
+                        <h3>War</h3>
+                        <p>Action/Thriller | 2h 34m</p>
+                        <p>Price: ₹280</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('War')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('war')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/d/d7/RRR_Poster.jpg" alt="RRR">
+                    <div class="movie-details">
+                        <h3>RRR</h3>
+                        <p>Action/Drama | 3h 2m</p>
+                        <p>Price: ₹300</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('RRR')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('rrr')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRufEP6oEOKyNDzGUo3httxYo2m2xdOZXFxw&s" alt="KGF: Chapter 2">
+                    <div class="movie-details">
+                        <h3>KGF: Chapter 2</h3>
+                        <p>Action/Drama | 2h 48m</p>
+                        <p>Price: ₹300</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('KGF: Chapter 2')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('kgf2')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BOWE4YWEyNjYtMWFiNC00M2IzLWE3ZGMtMjQ0ZGEyOWI1YjAzXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Pushpa">
+                    <div class="movie-details">
+                        <h3>Pushpa: The Rise</h3>
+                        <p>Action/Crime | 2h 59m</p>
+                        <p>Price: ₹280</p>
+                        <div class="discount-info" style="display: none;">
+                            <p class="original-price">Original Price: ₹<span class="total-price">0</span></p>
+                            <p class="discount-amount">Discount (50% off): -₹<span class="discount">0</span></p>
+                            <p class="final-price">Final Price: ₹<span class="final">0</span></p>
+                        </div>
+                        <div class="movie-buttons">
+                            <button onclick="selectMovie('Pushpa: The Rise')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('pushpa')">
+                                <i class="fas fa-play"></i> Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pathaan -->
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BM2QzM2JiNTMtYjU4Ny00MDZkLTk3MmUtYTRjMzVkZGJlNmYyXkEyXkFqcGdeQXVyMTUzNTgzNzM0._V1_.jpg" alt="Pathaan">
+                    <div class="movie-details">
+                        <h3>Pathaan</h3>
+                        <p>Action/Thriller | 2h 26m</p>
+                        <p>Price: ₹250</p>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('pathaan')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('pathaan')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Rocky Aur Rani -->
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMmM0Y2NlNGMtYzIyNi00OGVmLWI3ZDctYmU3NmI4ZjZmNGEzXkEyXkFqcGc@._V1_.jpg" alt="Rocky Aur Rani">
+                    <div class="movie-details">
+                        <h3>Rocky Aur Rani</h3>
+                        <p>Romance/Drama | 2h 49m</p>
+                        <p>Price: ₹250</p>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('rockyrani')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('rockyrani')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <!-- Pushpa -->
+                <div class="movie-card" data-category="tollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BMmQ4YmM3NjgtNTExNC00ZTZhLWEwZTctYjdhOWI4ZWFlMDk2XkEyXkFqcGdeQXVyMTI1NDEyNTM5._V1_.jpg" alt="Pushpa">
+                    <div class="movie-details">
+                        <h3>Pushpa: The Rise</h3>
+                        <p>Action/Crime | 2h 59m</p>
+                        <p>Price: ₹250</p>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('pushpa')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('pushpa')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KGF 2 -->
+                <div class="movie-card" data-category="tollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BZDNlNzBjMGUtYTA0Yy00OTI2LWJmZjMtODliYmUyYTI0OGFmXkEyXkFqcGdeQXVyODIwMDI1NjM@._V1_.jpg" alt="KGF 2">
+                    <div class="movie-details">
+                        <h3>K.G.F: Chapter 2</h3>
+                        <p>Action/Crime | 2h 48m</p>
+                        <p>Price: ₹250</p>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('kgf2')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('kgf2')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RRR -->
+                <div class="movie-card" data-category="tollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BODUwNDNjYzctODUxNy00ZTA2LWIyYTEtMDc5Y2E5ZjBmNTMzXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg" alt="RRR">
+                    <div class="movie-details">
+                        <h3>RRR</h3>
+                        <p>Action/Drama | 3h 2m</p>
+                        <p>Price: ₹250</p>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('rrr')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('rrr')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- War -->
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BNTlmNDMzOWQtYzg4Ny00OWQ0LWFhN2MtNmQ2MDczZGZhNTU5XkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg" alt="War">
+                    <div class="movie-details">
+                        <h3>War</h3>
+                        <p>Action/Thriller | 2h 34m</p>
+                        <p>Price: ₹250</p>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('war')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('war')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brahmastra -->
+                <div class="movie-card" data-category="bollywood">
+                    <img src="https://m.media-amazon.com/images/M/MV5BZjY2MmI1ZWItNmU0Yy00NTdkLWJiYmQtNzFlZWNlMzkxZTZjXkEyXkFqcGdeQXVyNjkwOTg4MTA@._V1_.jpg" alt="Brahmastra">
+                    <div class="movie-details">
+                        <h3>Brahmastra</h3>
+                        <p>Fantasy/Action | 2h 47m</p>
+                        <p>Price: ₹250</p>
+                        <div class="movie-buttons">
+                            <button class="book-btn" onclick="selectMovie('brahmastra')">Book Now</button>
+                            <button class="trailer-btn" onclick="playTrailer('brahmastra')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="theater-selection" style="display:none;">
+            <h2>Select Your Theater</h2>
+            <div class="theater-selection">
+                <div class="theater-list">
+                    <div class="theater-card" onclick="selectTheater('PVR Cinemas - Phoenix Mall')">
+                        <div class="theater-info">
+                            <h3>PVR Cinemas</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Phoenix Mall, Whitefield</p>
+                            <p class="amenities">
+                                <span><i class="fas fa-parking"></i> Free Parking</span>
+                                <span><i class="fas fa-hamburger"></i> Food Court</span>
+                                <span><i class="fas fa-couch"></i> Recliner</span>
+                            </p>
+                            <p class="rating"><i class="fas fa-star"></i> 4.5/5</p>
+                        </div>
+                    </div>
+
+                    <div class="theater-card" onclick="selectTheater('INOX - Garuda Mall')">
+                        <div class="theater-info">
+                            <h3>INOX</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Garuda Mall, MG Road</p>
+                            <p class="amenities">
+                                <span><i class="fas fa-parking"></i> Paid Parking</span>
+                                <span><i class="fas fa-hamburger"></i> Food Court</span>
+                                <span><i class="fas fa-wheelchair"></i> Wheelchair</span>
+                            </p>
+                            <p class="rating"><i class="fas fa-star"></i> 4.3/5</p>
+                        </div>
+                    </div>
+
+                    <div class="theater-card" onclick="selectTheater('Cinepolis - Forum Mall')">
+                        <div class="theater-info">
+                            <h3>Cinepolis</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Forum Mall, Koramangala</p>
+                            <p class="amenities">
+                                <span><i class="fas fa-parking"></i> Free Parking</span>
+                                <span><i class="fas fa-dolby"></i> Dolby Atmos</span>
+                                <span><i class="fas fa-couch"></i> Recliner</span>
+                            </p>
+                            <p class="rating"><i class="fas fa-star"></i> 4.6/5</p>
+                        </div>
+                    </div>
+
+                    <div class="theater-card" onclick="selectTheater('Carnival Cinemas - Elements Mall')">
+                        <div class="theater-info">
+                            <h3>Carnival Cinemas</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Elements Mall, JP Nagar</p>
+                            <p class="amenities">
+                                <span><i class="fas fa-parking"></i> Free Parking</span>
+                                <span><i class="fas fa-hamburger"></i> Food Court</span>
+                                <span><i class="fas fa-wheelchair"></i> Wheelchair</span>
+                            </p>
+                            <p class="rating"><i class="fas fa-star"></i> 4.2/5</p>
+                        </div>
+                    </div>
+
+                    <div class="theater-card" onclick="selectTheater('AGS Cinemas - Nagarabhavi')">
+                        <div class="theater-info">
+                            <h3>AGS Cinemas</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Nagarabhavi Main Road</p>
+                            <p class="amenities">
+                                <span><i class="fas fa-parking"></i> Free Parking</span>
+                                <span><i class="fas fa-dolby"></i> Dolby Atmos</span>
+                                <span><i class="fas fa-couch"></i> Recliner</span>
+                            </p>
+                            <p class="rating"><i class="fas fa-star"></i> 4.4/5</p>
+                        </div>
+                    </div>
+
+                    <div class="theater-card" onclick="selectTheater('SPI Central - Bellandur')">
+                        <div class="theater-info">
+                            <h3>SPI Central</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Central Mall, Bellandur</p>
+                            <p class="amenities">
+                                <span><i class="fas fa-parking"></i> Paid Parking</span>
+                                <span><i class="fas fa-hamburger"></i> Food Court</span>
+                                <span><i class="fas fa-wheelchair"></i> Wheelchair</span>
+                            </p>
+                            <p class="rating"><i class="fas fa-star"></i> 4.3/5</p>
+                        </div>
+                    </div>
+
+                    <div class="theater-card" onclick="selectTheater('Cineplex IMAX - Orion Mall')">
+                        <div class="theater-info">
+                            <h3>Cineplex IMAX</h3>
+                            <p class="location"><i class="fas fa-map-marker-alt"></i> Orion Mall, Malleshwaram</p>
+                            <p class="amenities">
+                                <span><i class="fas fa-film"></i> IMAX</span>
+                                <span><i class="fas fa-parking"></i> Free Parking</span>
+                                <span><i class="fas fa-dolby"></i> Dolby Atmos</span>
+                                <span><i class="fas fa-couch"></i> Recliner</span>
+                                <span><i class="fas fa-wheelchair"></i> Wheelchair</span>
+                            </p>
+                            <div class="theater-features">
+                                <span class="feature-tag">4K Projection</span>
+                                <span class="feature-tag">Premium Lounge</span>
+                            </div>
+                            <p class="rating"><i class="fas fa-star"></i> 4.8/5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="showtime-selection" style="display:none;">
+            <h2>Select Show Time</h2>
+            <div class="showtime-selection">
+                <div class="showtime-grid">
+                    <button class="showtime-button" onclick="selectShowtime('Morning')">Morning - 10:00 AM</button>
+                    <button class="showtime-button" onclick="selectShowtime('Afternoon')">Afternoon - 2:00 PM</button>
+                    <button class="showtime-button" onclick="selectShowtime('Evening')">Evening - 6:00 PM</button>
+                    <button class="showtime-button" onclick="selectShowtime('Night')">Night - 9:00 PM</button>
+                </div>
+            </div>
+        </section>
+
+        <button class="proceed-button" onclick="proceedToSeats()" style="display:none;">Proceed to Seat Selection</button>
+    </div>
+
+    <div id="trailerModal" class="trailer-modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeTrailer()">&times;</button>
+            <div class="video-container">
+                <iframe id="trailerFrame" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add this near the end of body -->
+    <div id="trailerModal" class="modal">
+        <span class="close" onclick="closeTrailer()">&times;</span>
+        <iframe id="trailerFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        let selectedMovie = '';
+        let selectedTheater = '';
+        let selectedShowtime = '';
+        let ticketCount = 0;
+        const TICKET_PRICE = 250;
+        const DISCOUNT_THRESHOLD = 3;
+        const DISCOUNT_PERCENTAGE = 50;
+
+        function selectMovie(movie) {
+            selectedMovie = movie;
+            document.getElementById('movie-selection').style.display = 'none';
+            document.getElementById('theater-selection').style.display = 'block';
+        }
+
+        function selectTheater(theater) {
+            selectedTheater = theater;
+            
+            // Store theater details for later use
+            localStorage.setItem('theaterDetails', JSON.stringify({
+                name: theater,
+                location: document.querySelector(`[onclick="selectTheater('${theater}')"] .location`).textContent,
+                amenities: Array.from(document.querySelector(`[onclick="selectTheater('${theater}')"] .amenities`).children)
+                    .map(span => span.textContent.trim())
+            }));
+
+            // Visual feedback
+            document.querySelectorAll('.theater-card').forEach(card => {
+                card.style.borderColor = 'transparent';
+            });
+            event.currentTarget.style.borderColor = getComputedStyle(document.documentElement)
+                .getPropertyValue('--primary-color');
+
+            // Show next section
+            document.getElementById('theater-selection').style.display = 'none';
+            document.getElementById('showtime-selection').style.display = 'block';
+        }
+
+        function selectShowtime(showtime) {
+            // Remove selected class from all buttons
+            document.querySelectorAll('.showtime-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked button
+            event.target.classList.add('selected');
+            selectedShowtime = showtime;
+
+            // Show proceed button
+            document.querySelector('.proceed-button').style.display = 'block';
+
+            // Show discount banner if applicable
+            const discountBanner = document.getElementById('discountBanner');
+            discountBanner.style.display = 'block';
+        }
+
+        function proceedToSeats() {
+            // Calculate discount
+            let totalPrice = TICKET_PRICE;
+            let discountAmount = 0;
+
+            // Apply discount if 3 or more tickets
+            if (ticketCount >= DISCOUNT_THRESHOLD) {
+                discountAmount = totalPrice * (DISCOUNT_PERCENTAGE / 100);
+                totalPrice -= discountAmount;
+            }
+
+            // Store selected details in localStorage
+            localStorage.setItem('selectedMovie', selectedMovie);
+            localStorage.setItem('selectedTheater', selectedTheater);
+            localStorage.setItem('selectedShowtime', selectedShowtime);
+            localStorage.setItem('ticketCount', ticketCount);
+            localStorage.setItem('totalPrice', totalPrice);
+            localStorage.setItem('discountAmount', discountAmount);
+
+            // Update this line to point to seats.html
+            window.location.href = 'seats.html';
+        }
+
+        // Add ticket count tracking
+        function updateTicketCount(count) {
+            ticketCount = count;
+            
+            // Calculate total price and discount
+            const totalPrice = TICKET_PRICE * ticketCount;
+            let discountAmount = 0;
+            let finalPrice = totalPrice;
+            
+            // Apply 50% discount if 3 or more tickets
+            if (ticketCount >= DISCOUNT_THRESHOLD) {
+                discountAmount = Math.floor(totalPrice * (DISCOUNT_PERCENTAGE / 100));
+                finalPrice = totalPrice - discountAmount;
+            }
+            
+            // Update price display
+            document.getElementById('priceDisplay').innerHTML = `
+                <p><strong>Total Price:</strong> ₹${totalPrice}</p>
+                ${discountAmount > 0 ? `
+                    <p style="color: #4CAF50;"><strong>Discount Applied:</strong> -₹${discountAmount}</p>
+                    <p style="color: var(--primary-color); font-size: 1.2em;"><strong>Final Price:</strong> ₹${finalPrice}</p>
+                ` : ''}
+            `;
+            
+            // Store values in localStorage
+            localStorage.setItem('ticketCount', ticketCount);
+            localStorage.setItem('totalAmount', finalPrice);
+            localStorage.setItem('discountAmount', discountAmount);
+            localStorage.setItem('originalPrice', totalPrice);
+            
+            // Show/hide discount banner based on ticket count
+            const discountBanner = document.getElementById('discountBanner');
+            discountBanner.style.display = count >= DISCOUNT_THRESHOLD ? 'block' : 'none';
+        }
+
+        function searchMovies() {
+            const searchInput = document.getElementById('movieSearchInput').value.toLowerCase();
+            const movieCards = document.querySelectorAll('.movie-card');
+            const categoryButtons = document.querySelectorAll('.category-button');
+
+            let visibleMoviesCount = 0;
+
+            movieCards.forEach(card => {
+                const movieTitle = card.querySelector('h3').textContent.toLowerCase();
+                const movieCategory = card.getAttribute('data-category');
+                const activeCategory = document.querySelector('.category-button.active').getAttribute('data-category');
+
+                const matchesSearch = movieTitle.includes(searchInput);
+                const matchesCategory = activeCategory === 'all' || movieCategory === activeCategory;
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'block';
+                    visibleMoviesCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show/hide "No movies found" message
+            const noMoviesMessage = document.getElementById('noMoviesMessage');
+            if (visibleMoviesCount === 0) {
+                if (!noMoviesMessage) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.id = 'noMoviesMessage';
+                    messageDiv.style.textAlign = 'center';
+                    messageDiv.style.color = 'white';
+                    messageDiv.style.padding = '20px';
+                    messageDiv.textContent = 'No movies found matching your search.';
+                    document.querySelector('.movie-selection').appendChild(messageDiv);
+                }
+            } else if (noMoviesMessage) {
+                noMoviesMessage.remove();
+            }
+        }
+
+        function filterMovies(category) {
+            const movieCards = document.querySelectorAll('.movie-card');
+            const categoryButtons = document.querySelectorAll('.category-button');
+
+            // Remove active class from all buttons
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            let visibleMoviesCount = 0;
+
+            movieCards.forEach(card => {
+                const movieCategory = card.getAttribute('data-category');
+                const searchInput = document.getElementById('movieSearchInput').value.toLowerCase();
+                const movieTitle = card.querySelector('h3').textContent.toLowerCase();
+
+                const matchesCategory = category === 'all' || movieCategory === category;
+                const matchesSearch = movieTitle.includes(searchInput);
+
+                if (matchesCategory && matchesSearch) {
+                    card.style.display = 'block';
+                    visibleMoviesCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show/hide "No movies found" message
+            const noMoviesMessage = document.getElementById('noMoviesMessage');
+            if (visibleMoviesCount === 0) {
+                if (!noMoviesMessage) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.id = 'noMoviesMessage';
+                    messageDiv.style.textAlign = 'center';
+                    messageDiv.style.color = 'white';
+                    messageDiv.style.padding = '20px';
+                    messageDiv.textContent = 'No movies found in this category.';
+                    document.querySelector('.movie-selection').appendChild(messageDiv);
+                }
+            } else if (noMoviesMessage) {
+                noMoviesMessage.remove();
+            }
+        }
+
+        const trailers = {
+            // Hollywood Movies
+            avengers: 'https://www.youtube.com/embed/TcMBFSGVi1c?autoplay=1&rel=0',
+            oppenheimer: 'https://www.youtube.com/embed/uYPbbksJxIg?autoplay=1&rel=0',
+            inception: 'https://www.youtube.com/embed/YoHD9XEInc0?autoplay=1&rel=0',
+            matrix: 'https://www.youtube.com/embed/vKQi3bBA1y8?autoplay=1&rel=0',
+            marvels: 'https://www.youtube.com/embed/wS_qbDztgVY?autoplay=1&rel=0',
+            wish: 'https://www.youtube.com/embed/oyRxxpD3yNw?autoplay=1&rel=0',
+            trolls: 'https://www.youtube.com/embed/ELs_K_ce1RI?autoplay=1&rel=0',
+            avatar2: 'https://www.youtube.com/embed/d9MyW72ELq0?autoplay=1&rel=0',
+
+            // Bollywood Movies
+            pathaan: 'https://www.youtube.com/embed/vqu4z34wENw?autoplay=1&rel=0',
+            jawan: 'https://www.youtube.com/embed/COv52Qyctws?autoplay=1&rel=0',
+            war: 'https://www.youtube.com/embed/tQ0mzXRk-oM?autoplay=1&rel=0',
+            brahmastra: 'https://www.youtube.com/embed/V5jVntRVl-0?autoplay=1&rel=0',
+            rockyrani: 'https://www.youtube.com/embed/6mdxy3zohEk?autoplay=1&rel=0',
+            animal: 'https://www.youtube.com/embed/Dydmpfo68DA?autoplay=1&rel=0',
+            dunki: 'https://www.youtube.com/embed/EOZsRk6yvhE?autoplay=1&rel=0',
+            '12thfail': 'https://www.youtube.com/embed/WeMJo0Zt0J4?autoplay=1&rel=0',
+
+            // Tollywood Movies
+            devara: 'https://www.youtube.com/embed/5cx7rvMvAWo?autoplay=1&rel=0',
+            aay: 'https://www.youtube.com/embed/rrpBEIuiyKU?autoplay=1&rel=0',
+            gamechanger: 'https://www.youtube.com/embed/zHiKFSBO_JE?autoplay=1&rel=0',
+            rrr: 'https://www.youtube.com/embed/NgBoMJy386M?autoplay=1&rel=0',
+            pushpa: 'https://www.youtube.com/embed/pKctjlxbFDQ?autoplay=1&rel=0',
+            kgf2: 'https://www.youtube.com/embed/JKa05nyUmuQ?autoplay=1&rel=0',
+            salaar: 'https://www.youtube.com/embed/bUR_FKt7Iso?autoplay=1&rel=0',
+            hanuman: 'https://www.youtube.com/embed/gWpP7AhMYwQ?autoplay=1&rel=0'
+        };
+
+        function playTrailer(movieId) {
+            const modal = document.getElementById('trailerModal');
+            const trailerFrame = document.getElementById('trailerFrame');
+            
+            if (trailers[movieId]) {
+                trailerFrame.src = trailers[movieId];
+                modal.style.display = 'block';
+            }
+        }
+
+        function closeTrailer() {
+            const modal = document.getElementById('trailerModal');
+            const trailerFrame = document.getElementById('trailerFrame');
+            trailerFrame.src = '';
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('trailerModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeTrailer();
+            }
+        });
+
+        // Add to your existing JavaScript
+        function updatePrice(ticketCount) {
+            const basePrice = 250;
+            const totalPrice = basePrice * ticketCount;
+            let discountAmount = 0;
+            let finalPrice = totalPrice;
+
+            // Apply 50% discount if 3 or more tickets
+            if (ticketCount >= 3) {
+                discountAmount = Math.floor(totalPrice * 0.5);
+                finalPrice = totalPrice - discountAmount;
+            }
+
+            // Update price display
+            const discountInfo = document.querySelector('.discount-info');
+            if (ticketCount > 0) {
+                document.querySelector('.total-price').textContent = totalPrice;
+                document.querySelector('.discount').textContent = discountAmount;
+                document.querySelector('.final').textContent = finalPrice;
+                discountInfo.style.display = 'block';
+            } else {
+                discountInfo.style.display = 'none';
+            }
+
+            // Store values
+            localStorage.setItem('ticketCount', ticketCount);
+            localStorage.setItem('totalAmount', finalPrice);
+            localStorage.setItem('discountAmount', discountAmount);
+        }
+    </script>
+</body>
+</html>

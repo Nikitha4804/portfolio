@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Arithmetic Calculator with History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShY-UpfgURF2V2WmsPg04hJAYseDlJAO2v6A&s'); 
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% {
+                background-position: center center;
+            }
+            50% {
+                background-position: right bottom;
+            }
+            100% {
+                background-position: center center;
+            }
+        }
+
+ 
+
+        .calculator, .history-container {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 500px;
+            display: none;
+            height: fit-content;
+        }
+
+        .calculator {
+            display: block;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 80%;
+            padding: 5px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 30%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .results {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .result {
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 45%;
+            margin: 5px 0;
+        }
+
+        #historyContent {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .entry {
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #noHistoryMessage {
+            font-style: italic;
+            color: gray;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Calculator Section -->
+    <div class="calculator">
+        <h2>Advanced Arithmetic Operations</h2>
+        <input type="number" id="num1" placeholder="Enter first number" required>
+        <input type="number" id="num2" placeholder="Enter second number" required>
+
+        <div class="buttons">
+            <button onclick="performOperation('add')">Add</button>
+            <button onclick="performOperation('subtract')">Subtract</button>
+            <button onclick="performOperation('multiply')">Multiply</button>
+            <button onclick="performOperation('modulus')">Modulus</button>
+            <button onclick="performOperation('divide')">Divide</button>
+            <button onclick="performOperation('exponent')">Exponent</button>
+            <button onclick="performOperation('sqrt')">Sqrt</button>
+            <button onclick="performOperation('log')">Log</button>
+            <button onclick="performOperation('sin')">Sin</button>
+            <button onclick="performOperation('cos')">Cos</button>
+        </div>
+        <button onclick="calculateAll()">Calculate All</button>
+        <button onclick="clearCalculator()">Clear</button>
+        <button onclick="showHistoryPage()">Show History</button>
+
+        <div class="results">
+            <div id="addResult" class="result">Add: </div><br><br>
+            <div id="subResult" class="result">Sub: </div><br><br>
+            <div id="mulResult" class="result">Mul: </div><br><br>
+            <div id="modResult" class="result">Mod: </div><br><br>
+            <div id="divResult" class="result">Div: </div><br><br>
+            <div id="expResult" class="result">Expo: </div><br><br>
+            <div id="sqrtResult" class="result">Sqrt (num1): </div><br><br>
+            <div id="logResult" class="result">Log (num1): </div><br><br>
+            <div id="sinResult" class="result">Sin (num1): </div><br><br>
+            <div id="cosResult" class="result">Cos (num1): </div><br><br>
+        </div>
+    </div>
+
+    <!-- History Section -->
+    <div class="history-container">
+        <h2>Calculation History</h2>
+        <div id="historyContent"></div>
+        <p id="noHistoryMessage">No history available.</p>
+        <button onclick="showCalculatorPage()">Back to Calculator</button>
+        <button onclick="clearHistory()">clear History</button>
+    </div>
+
+    <script>
+        let history = [];
+
+        // Perform an operation
+        function performOperation(operation) {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+
+            if (isNaN(num1) || isNaN(num2)) {
+                alert('Please enter valid numbers!');
+                return;
+            }
+
+            let result;
+
+            switch (operation) {
+                case 'add':
+                    result = num1 + num2;
+                    document.getElementById('addResult').innerHTML = `Add: ${result}`;
+                    break;
+                case 'subtract':
+                    result = num1 - num2;
+                    document.getElementById('subResult').innerHTML = `Sub: ${result}`;
+                    break;
+                case 'multiply':
+                    result = num1 * num2;
+                    document.getElementById('mulResult').innerHTML = `Mul: ${result}`;
+                    break;
+                case 'divide':
+                    result = num2 !== 0 ? num1 / num2 : 'Cannot divide by zero';
+                    document.getElementById('divResult').innerHTML = `Div: ${result}`;
+                    break;
+                case 'modulus':
+                    result = num1 % num2;
+                    document.getElementById('modResult').innerHTML = `Mod: ${result}`;
+                    break;
+                case 'exponent':
+                    result = Math.pow(num1, num2);
+                    document.getElementById('expResult').innerHTML = `Expo: ${result}`;
+                    break;
+                case 'sqrt':
+                    result = Math.sqrt(num1);
+                    document.getElementById('sqrtResult').innerHTML = `Sqrt (num1): ${result}`;
+                    break;
+                case 'log':
+                    result = num1 > 0 ? Math.log(num1) : 'Invalid input';
+                    document.getElementById('logResult').innerHTML = `Log (num1): ${result}`;
+                    break;
+                case 'sin':
+                    result = Math.sin(num1);
+                    document.getElementById('sinResult').innerHTML = `Sin (num1): ${result}`;
+                    break;
+                case 'cos':
+                    result = Math.cos(num1);
+                    document.getElementById('cosResult').innerHTML = `Cos (num1): ${result}`;
+                    break;
+            }
+
+            // Add to history
+            history.push(`${operation}: ${result}`);
+            localStorage.setItem('calcHistory', JSON.stringify(history));
+        }
+
+        // Calculate all operations
+        function calculateAll() {
+            ['add', 'subtract', 'multiply', 'divide', 'modulus', 'exponent', 'sqrt', 'log', 'sin', 'cos'].forEach(op => performOperation(op));
+        }
+
+        // Clear the calculator inputs and results
+        function clearCalculator() {
+            document.getElementById('num1').value = '';
+            document.getElementById('num2').value = '';
+            document.querySelectorAll('.result').forEach(res => res.innerHTML = '');
+        }
+
+        // Show history page
+        function showHistoryPage() {
+            document.querySelector('.calculator').style.display = 'none';
+            document.querySelector('.history-container').style.display = 'block';
+            loadHistory();
+        }
+
+        // Show calculator page
+        function showCalculatorPage() {
+            document.querySelector('.history-container').style.display = 'none';
+            document.querySelector('.calculator').style.display = 'block';
+        }
+
+        // Load history from localStorage
+        function loadHistory() {
+            const storedHistory = JSON.parse(localStorage.getItem('calcHistory')) || [];
+            const historyContent = document.getElementById('historyContent');
+            const noHistoryMessage = document.getElementById('noHistoryMessage');
+
+            if (storedHistory.length === 0) {
+                noHistoryMessage.style.display = 'block';
+            } else {
+                noHistoryMessage.style.display = 'none';
+                storedHistory.forEach(entry => {
+                    const p = document.createElement('p');
+                    p.className = 'entry';
+                    p.textContent = entry;
+                    historyContent.appendChild(p);
+                });
+            }
+        }
+
+        // Initial load of history when the page is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('calcHistory')) {
+                loadHistory();
+            }
+        });
+        
+        function clearHistory() {
+    // Clear the history from localStorage
+    localStorage.removeItem('calcHistory');
+
+    // Clear the history array and update the display
+    history = [];
+    loadHistory(); // Refresh the history content
+}
+
+function loadHistory() {
+    // Get the stored history from localStorage or use an empty array
+    const storedHistory = JSON.parse(localStorage.getItem('calcHistory')) || [];
+    const historyContent = document.getElementById('historyContent');
+    const noHistoryMessage = document.getElementById('noHistoryMessage');
+
+    // Clear the current displayed history
+    historyContent.innerHTML = '';
+
+    if (storedHistory.length === 0) {
+        // Show the "No history available" message
+        noHistoryMessage.style.display = 'block';
+    } else {
+        // Hide the "No history available" message
+        noHistoryMessage.style.display = 'none';
+
+        // Display each history entry
+        storedHistory.forEach(entry => {
+            const p = document.createElement('p');
+            p.className = 'entry';
+            p.textContent = entry;
+            historyContent.appendChild(p);
+        });
+    }
+}
+
+    </script>
+</body>
+</html>
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Portal</title>
+    <style>
+        /* Existing styles remain unchanged */
+        /* All previous CSS remains the same */
+             /* Entrance Page Styles */
+        .entrance-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url('https://source.unsplash.com/1600x900/?office,business');
+            background-size: cover;
+            animation: gradient 15s ease infinite;
+            background-position: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .entrance-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 600px;
+            animation: fadeIn 2s ease-in-out;  
+
+        }
+
+        .entrance-title {
+            
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+
+        .entrance-description {
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .start-btn {
+            font-family: Arial, sans-serif;
+            background-color: #4CAF50;
+            color:white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            
+        }
+
+        .start-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Hide application form initially */
+        #applicationSection {
+            display: none;
+        }
+
+        /* Your existing styles here */
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: Green;
+    padding: 15px 0;
+    background-color:whitesmoke;
+    font-family: arial,sans-serif;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform:uppercase;
+    animation: fadeIn 2s ease-in-out;
+    font-family: Arial, sans-serif;
+    font-size: var(--box-height);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+
+
+.form-container {
+    width: 60%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-spacing: 15px;
+}
+
+td {
+    padding: 10px;
+    font-size: 14px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.input-label {
+font-weight: bold;
+color: #333;
+margin-bottom: 10px;
+display: block;
+}
+
+.option-group {
+background: #f8f9fa;
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #ddd;
+}
+
+.option-group label {
+margin-right: 20px;
+color: #333;
+}
+
+.option-group input[type="radio"],
+.option-group input[type="checkbox"] {
+margin-right: 3px;
+}
+
+.option-group input:checked + label {
+color: #4CAF50;
+font-weight: bold;
+}
+.education-section {
+    margin: 10px 0;
+}
+
+.education-section h3 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.education-box {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.education-box h2 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+}
+
+.education-box label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    font-family: Arial, sans-serif;
+}
+
+.education-box input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+
+
+.button-container {
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="text"], input[type="email"], input[type="date"], input[type="tel"], select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.form-row label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.form-row input[type="checkbox"], .form-row input[type="radio"] {
+    width: auto;
+}
+
+.form-row select {
+    width: 50%;
+}
+
+.form-row textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Button container with flexbox */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.submit-btn, .reset-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 48%; /* To make them appear side by side */
+}
+
+.submit-btn:hover {
+    background-color: #45a049;
+}
+
+.reset-btn {
+    background-color: #f44336;
+}
+
+.reset-btn:hover {
+    background-color: #e53935;
+}
+.review-btn {
+    background-color: #2196F3;
+    color: white;
+}
+.success-message {
+    display: none;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+
+/* Review container */
+.review-container {
+    display: none;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color:white;
+    width: 500px;
+    
+}
+
+/* Review table styling */
+.review-container table {
+    width: 40%;
+    border-spacing: 10px;
+    border-collapse: collapse;
+}
+
+.review-container td {
+    padding: 8px;
+    text-align: left;
+}
+
+.review-container th {
+    padding: 8px;
+    text-align: left;
+    
+}
+
+.review-container td {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* Buttons in Review Section */
+.confirm-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.back-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.confirm-btn:hover, .back-btn:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        width: 90%;
+    }
+
+    table {
+        margin: 0;
+    }
+
+    .form-row input, .form-row select, .form-row textarea {
+        width: 100%;
+    }
+
+    .submit-btn, .reset-btn {
+        width: 100%;
+        margin-bottom: 10px; /* Stack buttons on small screens */
+    }
+}
+:root {
+--box-height: 40px;
+--border-radius: 5px;
+ --space-between: 20px;
+--font-size: 16px;
+
+ --color-0: #ffffff;
+ --color-1: #dcdcdd;
+--color-2: #c5c3c6;
+--color-3: #212529;
+ --color-4: #659b5e;
+ --color-5: #ce4257;
+ }
+
+ * {
+margin: 0;
+padding: 0;
+font-family: "Montserrat", sans-serif;
+box-sizing: border-box;
+}
+
+body {
+padding: 0 10px;
+background-image: url("https://i.postimg.cc/BnhHF28S/nastuh-abootalebi-y-Wwob8kw-OCk-unsplash-modified.jpg");
+background-size: cover;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-position: center;
+}
+
+#survey-container {
+margin: 20px auto;
+padding: 30px 20px;
+width: 100%;
+max-width: 840px;
+border-radius: calc(3 * var(--border-radius));
+}
+
+#title {
+margin: 30px 0;
+text-align: center;
+font-family: "Kumbh Sans", sans-serif;
+font-size: 50px;
+text-transform: capitalize;
+color: var(--color-3);
+}
+
+#description {
+margin: 30px 0;
+padding: 5px;
+text-align: center;
+font-size: 22px;
+font-weight: bold;
+color: var(--color-3);
+}
+
+#survey-form {
+padding: 30px;
+padding-top: 20px;
+background: var(--color-1);
+opacity: 98%;
+border: none;
+border-radius: calc(2 * var(--border-radius));
+}
+
+#survey-form * {
+font-size: var(--font-size);
+}
+
+.row-label,
+.row-input {
+padding: 5px 10px;
+margin: 0;
+height: var(--box-height);
+width: 100%;
+display: block;
+}
+
+.row-label {
+color: var(--color-3);
+font-weight: 600;
+}
+
+.row-label:not(:first-child) {
+margin-top: var(--space-between);
+}
+
+.row-input:not(.small) {
+background: white;
+border: none;
+border-radius: var(--border-radius);
+}
+
+.inline-label {
+margin-left: 10px;
+font-size: 14px;
+color: var(--color-3);
+}
+
+.small {
+height: calc(var(--box-height) * 0.75);
+}
+
+#comments {
+padding: 10px;
+margin: 0;
+height: 120px;
+width: 100%;
+background: white;
+border: none;
+border-radius: var(--border-radius);
+resize: none;
+}
+
+#submit {
+margin-top: calc(2 * var(--space-between));
+height: var(--box-height);
+width: 100%;
+background: var(--color-4);
+border: none;
+border-radius: var(--border-radius);
+color: white;
+font-weight: 600;
+cursor: pointer;
+text-transform: capitalize;
+}
+
+#submit:hover {
+box-shadow: 0 0 2px var(--color-3);
+}
+
+.download-btn {
+padding: 10px 20px;
+background-color: #007BFF; /* Blue background */
+color: white; /* White text */
+border: none; /* No border */
+border-radius: 5px; /* Rounded corners */
+cursor: pointer; /* Pointer cursor */
+font-size: 16px; /* Font size */
+transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.download-btn:hover {
+background-color: #0056b3; /* Darker blue on hover */
+}
+        /* Thank You Page Specific Styles */
+        .thank-you-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://source.unsplash.com/1600x900/?office,business');
+            background-size: cover;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .thank-you-content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 600px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .thank-you-title {
+            font-size: 2.5em;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .thank-you-description {
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .home-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .home-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Existing Entrance Page -->
+    <div id="entrancePage" class="entrance-container">
+        <div class="entrance-content">
+            <h1 class="entrance-title">Welcome to Our Job Portal</h1>
+            <button class="start-btn" onclick="startApplication()">Apply</button>
+        </div>
+    </div>
+
+    <!-- Application Section -->
+    <div id="applicationSection">
+        <h1>Online Job Application</h1>
+        <div class="form-container">
+            <form id="jobApplicationForm">
+                <!-- Entire existing form remains unchanged -->
+                <!-- (All previous form HTML) -->
+
+                           <!-- First Name -->
+                <tr>
+                    <td class="form-row">
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name" id="first_name" placeholder="Enter your first name" required>
+                    </td>
+                </tr>
+
+                <!-- Last Name -->
+                <tr>
+                    <td class="form-row">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" name="last_name" id="last_name" placeholder="Enter your last name" required>
+                    </td>
+                </tr>
+
+                <!-- Registration Number -->
+                <tr>
+                    <td class="form-row">
+                        <label for="rlno">Registration Number</label>
+                        <input type="text" name="rlno" id="rlno" placeholder="Enter your roll number" required>
+                    </td>
+                </tr>
+
+                <!-- Email ID -->
+                <tr>
+                    <td class="form-row">
+                        <label for="email">Email ID</label>
+                        <input type="email" name="email" id="email" placeholder="Enter your email address" required>
+                    </td>
+                </tr>
+
+                <!-- Phone Number -->
+                <tr>
+                    <td class="form-row">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" pattern="[0-9]{10}" required>
+                    </td>
+                </tr>
+
+                <!-- Date of Birth -->
+                <tr>
+                    <td class="form-row">
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" name="dob" id="dob" required>
+                    </td>
+                </tr>
+<!-- Gender -->
+<tr>
+    <td class="form-row">
+           <div class="form-row"
+                <label>Gender</label>
+                <div class="option-group">
+                    <input type="radio" name="gender" value="male" id="male">
+                    <label for="male">Male</label>
+                    <input type="radio" name="gender" value="female" id="female">
+                    <label for="female">Female</label>
+                    <input type="radio" name="gender" value="Other" id="Other">
+                    <label for="Other">Other</label>
+                </div>
+            </div>
+    </td>
+</tr>
+
+<!-- Languages Known -->
+<tr>
+    <td>    
+        <div class="form-row">
+            <label>Languages Known</label>
+            <div class="option-group">
+                <input type="checkbox" name="languages" value="telugu" id="telugu">
+                <label for="telugu">Telugu</label>
+                <input type="checkbox" name="languages" value="hindi" id="hindi">
+                <label for="hindi">Hindi</label>
+                <input type="checkbox" name="languages" value="english" id="english">
+                <label for="english">English</label>
+                <input type="checkbox" name="languages" value="tamil" id="tamil">
+                <label for="tamil">Tamil</label>
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+                
+              <!-- Education Section -->
+<tr>
+    <td class="form-row">
+        <div class="education-section">
+            <h3 style="color: #333; font-size: 20px; margin-bottom: 25px; font-family: Arial, sans-serif;">Education Details</h3>
+            
+            <div class="education-box">
+                <h2 style="color: #333; font-size: 18px; margin-bottom: 15px; font-family: Arial, sans-serif;">Tenth</h2>
+                <div class="form-group">
+                    <label for="tenthSchool" style="font-weight: bold; color: #333; font-family: Arial, sans-serif;">School Name *</label>
+                    <input type="text" id="tenthSchool" name="tenthSchool" placeholder="Enter school name" required 
+                           style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                </div>
+                <div class="form-group">
+                    <label for="tenthPercentage" style="font-weight: bold; color: #333; font-family: Arial, sans-serif;">10th Percentage *</label>
+                    <input type="text" id="tenthPercentage" name="tenthPercentage" placeholder="Enter percentage" required 
+                           style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                </div>
+            </div>
+
+            <div class="education-box">
+                <h2 style="color: #333; font-size: 18px; margin-bottom: 15px; font-family: Arial, sans-serif;">Intermediate</h2>
+                <div class="form-group">
+                    <label for="interCollege" style="font-weight: bold; color: #333; font-family: Arial, sans-serif;">College Name *</label>
+                    <input type="text" id="interCollege" name="interCollege" placeholder="Enter college name" required 
+                           style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                </div>
+                <div class="form-group">
+                    <label for="interPercentage" style="font-weight: bold; color: #333; font-family: Arial, sans-serif;">Intermediate Percentage *</label>
+                    <input type="text" id="interPercentage" name="interPercentage" placeholder="Enter percentage" required 
+                           style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                </div>
+            </div>
+
+            <div class="education-box">
+                <h2 style="color: #333; font-size: 18px; margin-bottom: 15px; font-family: Arial, sans-serif;">Degree</h2>
+                <div class="form-group">
+                    <label for="degreeUniversity" style="font-weight: bold; color: #333; font-family: Arial, sans-serif;">University Name *</label>
+                    <input type="text" id="degreeUniversity" name="degreeUniversity" placeholder="Enter university name" required 
+                           style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                </div>
+                <div class="form-group">
+                    <label for="degreePercentage" style="font-weight: bold; color: #333; font-family: Arial, sans-serif;">Degree Percentage *</label>
+                    <input type="text" id="degreePercentage" name="degreePercentage" placeholder="Enter percentage" required 
+                           style="width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;">
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>                   
+              <!-- Skills -->
+<tr>
+    <td class="form-row">
+        <label class="input-label">Skills</label>
+        <div class="option-group">
+            <input type="checkbox" name="skills" value="C" id="C">
+            <label for="C">C</label>
+            <input type="checkbox" name="skills" value="java" id="java">
+            <label for="java">Java</label>
+            <input type="checkbox" name="skills" value="python" id="python">
+            <label for="python">Python</label>
+            <input type="checkbox" name="skills" value="html" id="html">
+            <label for="html">HTML</label>
+            <input type="checkbox" name="skills" value="css" id="css">
+            <label for="css">CSS</label>
+        </div>
+    </td>
+</tr>
+
+                      <!-- Work Experience -->
+                <tr>
+                    <td class="form-row">
+                        <label for="Experience">Experience</label>
+                        <select name="Experience" id="Experience">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value=" More than 3">More than 3</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <!-- Address -->
+                <tr>
+                    <td class="form-row">
+                        <label for="address">Address</label>
+                        <textarea name="address" id="address" rows="4" placeholder="Enter your address" required></textarea>
+                    </td>
+                </tr>
+
+                <!-- Photo Upload -->
+                <tr>
+                    <td class="form-row">
+                        <label for="photo">Upload Photo</label>
+                        <input type="file" name="photo" id="photo" accept=".jpg" required>
+                    </td>
+                </tr>
+
+                <!-- Resume Upload -->
+                <tr>
+                    <td class="form-row">
+                        <label for="resume">Upload Resume</label>
+                        <input type="file" name="resume" id="resume" accept=".pdf, .doc, .docx" required>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="button-container">
+                <button type="submit" class="submit-btn">Submit Application</button>
+                <button type="reset" class="reset-btn">Reset</button>
+                <button type="button" class="review-btn" id="reviewBtn" style="display:none;">Review Your Application</button>
+            </div>
+        </form>
+
+            <div class="success-message" id="successMessage" style="display:none;">
+                <p>Your application has been successfully submitted!</p>
+            </div>
+        </div>
+
+        <!-- Review Section -->
+        <center>
+            <div class="review-container" id="reviewContainer">
+                <h3>Review Your Application</h3>
+                <table id="reviewTable"></table>
+                <div class="button-container">
+                    <button type="button" class="confirm-btn" id="confirmBtn">Confirm Submission</button>
+                    <button type="button" class="back-btn" id="backBtn">Back to Edit</button>
+                    <button class="download-btn" id="downloadBtn">Download Review</button>
+                </div>
+            </div>
+        </center>
+    </div>
+
+    <!-- Thank You Page -->
+    <div id="thankYouPage" class="thank-you-container" style="display:none;">
+        <div class="thank-you-content">
+            <h1 class="thank-you-title">Thank You!</h1>
+            <p class="thank-you-description">Your job application has been successfully submitted</p>
+            <button class="home-btn" onclick="returnToEntrance()">Back to Home</button>
+        </div>
+    </div>
+
+    <script>
+      
+    function startApplication() {
+        document.getElementById('entrancePage').style.display = 'none';
+        document.getElementById('applicationSection').style.display = 'block';
+    }
+
+    // Progress dots animation (Placeholder, as dots selector might not exist)
+    let currentDot = 0;
+    setInterval(() => {
+        const dots = document.querySelectorAll('.progress-dot');
+        if (dots.length > 0) {
+            dots[currentDot].classList.remove('active');
+            currentDot = (currentDot + 1) % dots.length;
+            dots[currentDot].classList.add('active');
+        }
+    }, 2000);
+
+    // Form Submission Handler
+    document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent actual form submission for demo
+
+        // Show success message
+        document.getElementById('successMessage').style.display = 'block';
+        
+        // Display the Review button
+        document.getElementById('reviewBtn').style.display = 'inline-block';
+
+        // Collect form data for review
+        const formData = new FormData(event.target);
+        let reviewContent = '';
+
+        // Process each form field
+        formData.forEach((value, key) => {
+            if (key === 'photo') {
+                const photoURL = URL.createObjectURL(value);
+                reviewContent += `<tr><td><strong>${key.replace('_', ' ').toUpperCase()}:</strong></td><td><img src="${photoURL}" alt="Uploaded Photo" style="width:40px;height:auto;"></td></tr>`;
+            } else if (key === 'resume') {
+                const resumeURL = URL.createObjectURL(value);
+                reviewContent += `<tr><td><strong>${key.replace('_', ' ').toUpperCase()}:</strong></td><td><a href="${resumeURL}" target="_blank">View Resume</a></td></tr>`;
+            } else {
+                reviewContent += `<tr><td><strong>${key.replace('_', ' ').toUpperCase()}:</strong></td><td>${value}</td></tr>`;
+            }
+        });
+
+        // Populate the review table with collected data
+        document.getElementById('reviewTable').innerHTML = reviewContent;
+
+        // Display review section
+        document.getElementById('reviewContainer').style.display = 'block';
+        document.querySelector('.form-container').style.display = 'none'; // Hide form after submission
+    });
+
+    // Back to Form Handler
+    document.getElementById('backBtn').addEventListener('click', function() {
+        document.getElementById('reviewContainer').style.display = 'none';
+        document.querySelector('.form-container').style.display = 'block'; // Show form again
+        document.getElementById('reviewBtn').style.display = 'none'; // Hide review button
+        document.getElementById('successMessage').style.display = 'none'; // Hide success message
+    });
+
+    // Confirm Submission Handler
+    document.getElementById('confirmBtn').addEventListener('click', function() {
+        // Hide application and review sections
+        document.getElementById('applicationSection').style.display = 'none';
+        
+        // Show thank you page
+        const thankYouPage = document.getElementById('thankYouPage');
+        if (thankYouPage) {
+            thankYouPage.style.display = 'flex';
+        }
+    });
+
+    // Download Review Handler
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        const reviewData = document.getElementById('reviewTable').innerText;
+        const blob = new Blob([reviewData], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'review.txt';
+        link.click();
+    });
+
+    // Return to Entrance Function
+    function returnToEntrance() {
+        // Hide thank you page
+        const thankYouPage = document.getElementById('thankYouPage');
+        if (thankYouPage) {
+            thankYouPage.style.display = 'none';
+        }
+        
+        // Show entrance page
+        document.getElementById('entrancePage').style.display = 'block';
+        
+        // Reset form
+        document.getElementById('jobApplicationForm').reset();
+        
+        // Reset other elements
+        document.getElementById('successMessage').style.display = 'none';
+        document.getElementById('reviewBtn').style.display = 'none';
+        document.querySelector('.form-container').style.display = 'block';
+    }
+
+        
+    </script>
+</body>
+</html>

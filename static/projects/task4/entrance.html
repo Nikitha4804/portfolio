@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Hub - Your Cinema Companion</title>
+    
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #2d2d2d;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+
+        .app-container {
+            text-align: center;
+            background: rgba(45, 45, 45, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+
+        .app-logo {
+            width: 250px;
+            height: 250px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        .app-logo:hover {
+            transform: rotateY(20deg) scale(1.1);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+        }
+
+        .app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .app-logo:hover img {
+            transform: rotate(360deg) scale(1.2);
+        }
+
+        .start-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .start-button:hover {
+            background: #ff3333;
+            transform: scale(1.05);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-logo pulse-animation" onclick="startApp()">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxyZWN0IHdpZHRoPSIyNTAiIGhlaWdodD0iMjUwIiBmaWxsPSIjZmY0ZDRkIi8+CiAgICA8cGF0aCBkPSJNMTI1IDMwCiAgICAgICAgTDE2NS42MyA4Ni40NwogICAgICAgIEwyMzMuNzQgOTYuMTUKICAgICAgICBMMTkzLjUgMTQ5LjUzCiAgICAgICAgTDIwMi4zOSAyMjAuMDMKICAgICAgICBMMTI1IDE4NwogICAgICAgIEw0Ny42MSAyMjAuMDMKICAgICAgICBMNTYuNSAxNDkuNTMKICAgICAgICBMMTYuMjYgOTYuMTUKICAgICAgICBMODQuMzcgODYuNDcKICAgICAgICBMMTI1IDMwIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=" alt="MovieMate Logo">
+        </div>
+        <h1>Movie Hub</h1>
+        <p>Your Ultimate Cinema Companion</p>
+        
+        <button class="start-button" onclick="startApp()">
+            Start Booking
+        </button>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <h2>Loading...</h2>
+            <p>Preparing your movie experience</p>
+        </div>
+    </div>
+
+    <script>
+        function startApp() {
+            const logo = document.querySelector('.app-logo');
+            const container = document.querySelector('.app-container');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            // Logo animation
+            logo.style.transform = 'rotateY(180deg) scale(0.5)';
+            container.style.transform = 'rotateX(30deg)';
+
+            // Show loading overlay
+            loadingOverlay.style.display = 'flex';
+
+            // Redirect after animation
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html> 
